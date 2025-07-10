@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import fs from 'fs';
 const apiUrl = process.env.SOME3C_API;
 class Some3C {
     static async fetchData(endpoint, params = {}) {
@@ -34,6 +34,38 @@ export const getFun = async (fun, params) => {
         return data;
     } catch (error) {
         console.error('Error getting function data:', error);
+        throw error;
+    }
+}
+
+export const getScreenshot = async (deviceid, name) => {
+    try {
+        const data = await Some3C.fetchData('/api/pic/screenshot', { id: deviceid, jpg: true });
+        return data.data.image;
+        // console.log(data.data.image);
+        // const decoded = Buffer.from(data.data.image, "base64");
+
+        // fs.writeFileSync(`./screenshots/${name}.png`, decoded, {
+        //     encoding: 'base64'
+        // });
+        // console.log(`Screenshot saved for device ${deviceid}`);
+
+
+        return data;
+    } catch (error) {
+        console.error('Error taking screenshot:', error);
+        throw error;
+    }
+}
+
+export const getClick = async (deviceid, x, y) => {
+    try {
+        const data = await Some3C.fetchData('/api/mouse/click', { id: deviceid, x, y });
+        console.log({ data });
+
+        return data;
+    } catch (error) {
+        console.error('Error clicking on screenshot:', error);
         throw error;
     }
 }
