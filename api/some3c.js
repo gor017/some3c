@@ -1,6 +1,14 @@
 import axios from 'axios';
 import fs from 'fs';
 const apiUrl = process.env.SOME3C_API;
+const axiosInstance = axios.create({
+    baseURL: apiUrl,
+    headers: {
+        'Content-Type': 'application/json',
+    }
+});
+
+
 class Some3C {
     static async fetchData(endpoint, params = {}) {
         try {
